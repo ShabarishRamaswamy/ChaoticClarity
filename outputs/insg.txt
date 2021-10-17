@@ -1,0 +1,16 @@
+INSIGHTS: 
+[Decimal('1.0'), Decimal('1918.0')]
+
+
+[{'location_start': 37, 'location_end': 54, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act,'}]
+
+
+[{'location_start': 29, 'location_end': 46, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act,'}]
+
+
+[{'location_start': 90, 'location_end': 108, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act, '}]
+
+
+[Decimal('4.0'), Decimal('2015.0')]
+
+

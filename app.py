@@ -1,4 +1,7 @@
 from flask import Flask
+from flask import request
+import json
+
 app = Flask(__name__)
 import os
 
@@ -19,4 +22,12 @@ def post_pdf():
 
 @app.route('/pdf', methods=['GET'])
 def get_pdf():
+    return 'Sent the PDF'
+
+
+@app.route('/processPDF', methods=['POST'])
+def process_pdf():
+    all_data = request.get_data()
+    all_data = json.loads(all_data)
+    print(all_data)
     return 'Sent the PDF'

@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import request
+import requests
+
 import json
 
 app = Flask(__name__)
@@ -30,4 +32,8 @@ def process_pdf():
     all_data = request.get_data()
     all_data = json.loads(all_data)
     print(all_data)
-    return 'Sent the PDF'
+    send_ok()
+    return 'Working on it.'
+
+def send_ok():
+    requests.get('http://localhost:5000/processPDF/completed')

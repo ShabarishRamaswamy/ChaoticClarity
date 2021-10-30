@@ -25,7 +25,7 @@ from requests_html import HTML
 from requests_html import HTMLSession
 
 
-pdffile = "./pdfs/1.pdf"
+pdffile = "./pdfs/1.pdf" # Change from 1 to the pdf name sent by the user.
 doc = fitz.open(pdffile)
 
 for i in range(1000):
@@ -33,23 +33,31 @@ for i in range(1000):
         print(i)
         page = doc.loadPage(i)
         pix = page.getPixmap()
-        output = "../outputs/outfile" + str(i) + ".png"
+        output = "../outputs/outfile" + str(i) + ".png" # Rather than Outfile, name should be of PDF
         pix.writePNG(output)
     except ValueError:
         break
 print("Done !")
 
 ##
-FILE_PATH = './pdfs/TU.pdf'
+FILE_PATH = './pdfs/TU.pdf' # Why two file paths ??
 
 with open(FILE_PATH, mode='rb') as f:
     reader = PyPDF2.PdfFileReader(f)
     page = reader.getPage(10)
     print(page.extractText())
 
+## PyPDF2
+## If No O/P, assume page is in IMG form.
+
+## Tesseract.
+
+# Continue.
+
+
 ##
 from PIL import Image
-a = pytesseract.image_to_string(Image.open("../outputs/scr1.png"), lang="eng")
+a = pytesseract.image_to_string(Image.open("../outputs/scr1.png"), lang="eng") # Change to the correct img.
 print(a)
 
 ##
@@ -140,13 +148,6 @@ for i in bb:
          text_file.write("%s \n" %doc.ents[0])
     else:
        pass
-
-
-
-
-
-
-
 
 
 

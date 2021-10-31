@@ -4,6 +4,8 @@ import requests
 
 import json
 
+from chaoticClarity import sendPDFName
+
 app = Flask(__name__)
 import os
 
@@ -33,6 +35,7 @@ def process_pdf():
     all_data = json.loads(all_data)
     print(all_data)
     send_ok()
+    sendPDFName(all_data) # Fix this to the correct value.
     return 'Working on it.'
 
 def send_ok():

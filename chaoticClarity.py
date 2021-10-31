@@ -25,7 +25,43 @@ from requests_html import HTML
 from requests_html import HTMLSession
 
 
-pdffile = "./pdfs/1.pdf" # Change from 1 to the pdf name sent by the user.
+PDF_REPO = "../ChaoticClarity-Backend/pdfs/"
+MAIN_PDF_NAME = ""
+
+def sendPDFName(PDFName):
+  global MAIN_PDF_NAME 
+  MAIN_PDF_NAME = PDFName
+
+  if MAIN_PDF_NAME:
+    pass
+  else:
+    MAIN_PDF_NAME = "test-1.pdf"
+
+if MAIN_PDF_NAME:
+  pass
+else:
+  sendPDFName()
+
+
+##
+FILE_PATH = PDF_REPO + MAIN_PDF_NAME
+
+with open(FILE_PATH, mode='rb') as f:
+  flag = 0
+  reader = PyPDF2.PdfFileReader(f)
+  page = reader.getPage(0)
+  page_contents = page.extractText()
+  for line in page_contents:
+    if line != "\n":
+      flag = 1
+
+  if flag == 0:
+    pass # Tesseract
+  elif flag == 1:
+    pass # FITZ
+
+
+pdffile = PDF_REPO + MAIN_PDF_NAME
 doc = fitz.open(pdffile)
 
 for i in range(1000):
@@ -39,13 +75,7 @@ for i in range(1000):
         break
 print("Done !")
 
-##
-FILE_PATH = './pdfs/TU.pdf' # Why two file paths ??
 
-with open(FILE_PATH, mode='rb') as f:
-    reader = PyPDF2.PdfFileReader(f)
-    page = reader.getPage(10)
-    print(page.extractText())
 
 ## PyPDF2
 ## If No O/P, assume page is in IMG form.

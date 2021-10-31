@@ -26,54 +26,56 @@ from requests_html import HTMLSession
 
 
 PDF_REPO = "../ChaoticClarity-Backend/pdfs/"
-MAIN_PDF_NAME = ""
+MAIN_PDF_NAME = 0
+TEXT_BASED_PDF = 1
+
 
 def sendPDFName(PDFName):
   global MAIN_PDF_NAME 
   MAIN_PDF_NAME = PDFName
 
-  if MAIN_PDF_NAME:
-    pass
-  else:
-    MAIN_PDF_NAME = "test-1.pdf"
-
 if MAIN_PDF_NAME:
   pass
 else:
-  sendPDFName()
+  sendPDFName("test-1")
 
 
 ##
-FILE_PATH = PDF_REPO + MAIN_PDF_NAME
+FILE_PATH = PDF_REPO + MAIN_PDF_NAME + ".pdf"
 
+## LOOP for each page
 with open(FILE_PATH, mode='rb') as f:
-  flag = 0
   reader = PyPDF2.PdfFileReader(f)
-  page = reader.getPage(0)
-  page_contents = page.extractText()
-  for line in page_contents:
-    if line != "\n":
-      flag = 1
 
-  if flag == 0:
-    pass # Tesseract
-  elif flag == 1:
-    pass # FITZ
-
-
-pdffile = PDF_REPO + MAIN_PDF_NAME
-doc = fitz.open(pdffile)
-
-for i in range(1000):
+  for pages_number in range(5):
     try:
-        print(i)
-        page = doc.loadPage(i)
-        pix = page.getPixmap()
-        output = "../outputs/outfile" + str(i) + ".png" # Rather than Outfile, name should be of PDF
-        pix.writePNG(output)
-    except ValueError:
-        break
-print("Done !")
+      page = reader.getPage(pages_number)
+      page_contents = page.extractText()
+      if page_contents:
+        for line in page_contents:
+          if line == "\n":
+            TEXT_BASED_PDF = 0 # I.e Image based PDF.
+            print("Image Based PDF")
+      else:
+        TEXT_BASED_PDF = 0
+        print("Image Based PDF")
+
+    except:
+      continue
+
+
+if TEXT_BASED_PDF == 0:
+  doc = fitz.open(FILE_PATH)
+  for i in range(doc.pageCount):
+      try:
+          page = doc.load_page(i)
+          pix = page.get_pixmap()
+          output = "./outputs/" + MAIN_PDF_NAME + str(i) + ".png"
+          # print(output)
+          pix.save(output)
+      except ValueError:
+          break
+  print("Done !")
 
 
 

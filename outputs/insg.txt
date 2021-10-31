@@ -1,16 +1,10 @@
 INSIGHTS: 
-[Decimal('1.0'), Decimal('1918.0')]
+[Decimal('5.0')]
 
 
-[{'location_start': 37, 'location_end': 54, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act,'}]
+[Decimal('14.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('1996.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('3.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('1996.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('2012.0'), Decimal('15.0'), Decimal('16.0'), Decimal('1723.0'), Decimal('25.0'), Decimal('26.0'), Decimal('21.0'), Decimal('28.0'), Decimal('30.0'), Decimal('3132.0'), Decimal('33.0')]
 
 
-[{'location_start': 29, 'location_end': 46, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act,'}]
-
-
-[{'location_start': 90, 'location_end': 108, 'act_name': 'Trade Unions Act', 'section': '', 'year': '', 'ambiguous': False, 'value': 'Trade Unions Act, '}]
-
-
-[Decimal('4.0'), Decimal('2015.0')]
+[Decimal('36.0'), Decimal('30.0'), Decimal('45.0'), Decimal('46.0')]
 
 

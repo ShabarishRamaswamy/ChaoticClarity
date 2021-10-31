@@ -55,10 +55,10 @@ with open(FILE_PATH, mode='rb') as f:
         for line in page_contents:
           if line == "\n":
             TEXT_BASED_PDF = 0 # I.e Image based PDF.
-            print("Image Based PDF")
+            # print("Image Based PDF")
       else:
         TEXT_BASED_PDF = 0
-        print("Image Based PDF")
+        # print("Image Based PDF")
 
     except:
       continue
@@ -66,7 +66,7 @@ with open(FILE_PATH, mode='rb') as f:
 
 if TEXT_BASED_PDF == 0:
   doc = fitz.open(FILE_PATH)
-  for i in range(doc.pageCount):
+  for i in range(doc.pageCount): # doc.pageCount
       try:
           page = doc.load_page(i)
           pix = page.get_pixmap()
@@ -86,15 +86,20 @@ if TEXT_BASED_PDF == 0:
 
 # Continue.
 
+
+with open("./outputs/summary.txt", "a") as text_file:
+    text_file.write("Summary:")
+
 if TEXT_BASED_PDF == 0:
   doc = fitz.open(FILE_PATH)
-  for i in range(doc.pageCount):
-
+  for i in range(doc.pageCount): # doc.pageCount
+    print(str(i) + " Processing starts")
 
     ##
     from PIL import Image
-    a = pytesseract.image_to_string(Image.open("../outputs/scr1.png"), lang="eng") # Change to the correct img.
-    print(a)
+    image_page_name = "./outputs/" + MAIN_PDF_NAME + str(i) + ".png"
+    ocr_output = pytesseract.image_to_string(Image.open(image_page_name), lang="eng")
+    print(ocr_output)
 
     ##
     def cleaner(text):        
@@ -142,45 +147,45 @@ if TEXT_BASED_PDF == 0:
       stop_words = stopwords.words('english')    
       summary = []
       sentences = cleaner(text)
-      cos_matrix = sim_matrix(sentences,stop_words)
-      cos_graph = nx.from_numpy_array(cos_matrix)
-      scores = nx.pagerank(cos_graph)
-      ranks = sorted(((scores[i],s) for i,s in enumerate(sentences)),reverse=True)
-      
-      for i in range(top_n):
-        summary.append(ranks[i][1])
-      return " ".join(summary),len(sentences)
-
-
+      if len(sentences) > 6:
+        cos_matrix = sim_matrix(sentences,stop_words)
+        cos_graph = nx.from_numpy_array(cos_matrix)
+        scores = nx.pagerank(cos_graph)
+        ranks = sorted(((scores[i],s) for i,s in enumerate(sentences)),reverse=True)
+        
+        for i in range(top_n):
+          summary.append(ranks[i][1])
+        return " ".join(summary),len(sentences)
+      return " "
 
 
     ##
-    a = a.replace('\n', " ")
-    a
+    ocr_output = ocr_output.replace('\n', " ")
+    print("OCR: ---- " + ocr_output)
 
     ## 
-    g = generate_summary(a,4)[0].strip('\n')
-    with open("../outputs/summary.txt", "w") as text_file:
-        text_file.write("Summary: %s" % g)
-    g
+    g = generate_summary(ocr_output,4)[0].strip('\n')
+    with open("./outputs/summary.txt", "a") as text_file:
+        text_file.write("%s" % g)
+    print(g)
 
 
     ##
-    bb = a.split('.')
-    bb
+    bb = ocr_output.split('.')
+    print(bb)
 
     ##
 
     # Load the model
     nlp = spacy.load("en_blackstone_proto")
-    with open("../outputs/terms.txt", "w") as text_file:
+    with open("./outputs/terms.txt", "w") as text_file:
         text_file.write("Important terms: \n")
     for i in bb:
         doc = nlp(i)
     # Call displacy and pass `ner_displacy_options` into the option parameter`
         if doc.ents != ():
           print(doc.ents[0])
-          with open("../outputs/terms.txt", "a") as text_file:
+          with open("./outputs/terms.txt", "a") as text_file:
             text_file.write("%s \n" %doc.ents[0])
         else:
           pass
@@ -322,7 +327,7 @@ if TEXT_BASED_PDF == 0:
 
 
     ##
-    test = a
+    test = ocr_output
     test = ''.join(filter( lambda x: x in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ', test ))
     test
 

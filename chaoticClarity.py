@@ -1,3 +1,4 @@
+# from app import send_ok
 import fitz
 import PyPDF2
 import pytesseract
@@ -26,18 +27,22 @@ from requests_html import HTMLSession
 
 
 PDF_REPO = "../ChaoticClarity-Backend/pdfs/"
+OUTPUT_REPO = "../ChaoticClarity-Backend/outputs/"
 MAIN_PDF_NAME = 0
 TEXT_BASED_PDF = 1
+testing = True
 
 
 def sendPDFName(PDFName):
   global MAIN_PDF_NAME 
   MAIN_PDF_NAME = PDFName
+  return "done"
 
-if MAIN_PDF_NAME:
-  pass
-else:
-  sendPDFName("test-1")
+if testing:
+  if MAIN_PDF_NAME:
+    pass
+  else:
+    sendPDFName("test-1")
 
 
 ##
@@ -70,7 +75,7 @@ if TEXT_BASED_PDF == 0:
       try:
           page = doc.load_page(i)
           pix = page.get_pixmap()
-          output = "./outputs/" + MAIN_PDF_NAME + str(i) + ".png"
+          output = OUTPUT_REPO + MAIN_PDF_NAME + str(i) + ".png"
           # print(output)
           pix.save(output)
       except ValueError:
@@ -87,17 +92,19 @@ if TEXT_BASED_PDF == 0:
 # Continue.
 
 
-with open("./outputs/summary.txt", "a") as text_file:
+with open( OUTPUT_REPO + "summary.txt", "a") as text_file:
     text_file.write("Summary:")
 
 if TEXT_BASED_PDF == 0:
   doc = fitz.open(FILE_PATH)
+  page_count = -1
   for i in range(doc.pageCount): # doc.pageCount
+    page_count += 1
     print(str(i) + " Processing starts")
 
     ##
     from PIL import Image
-    image_page_name = "./outputs/" + MAIN_PDF_NAME + str(i) + ".png"
+    image_page_name = OUTPUT_REPO + MAIN_PDF_NAME + str(i) + ".png"
     ocr_output = pytesseract.image_to_string(Image.open(image_page_name), lang="eng")
     print(ocr_output)
 
@@ -165,7 +172,7 @@ if TEXT_BASED_PDF == 0:
 
     ## 
     g = generate_summary(ocr_output,4)[0].strip('\n')
-    with open("./outputs/summary.txt", "a") as text_file:
+    with open( OUTPUT_REPO + "summary.txt", "a" ) as text_file:
         text_file.write("%s" % g)
     print(g)
 
@@ -178,14 +185,14 @@ if TEXT_BASED_PDF == 0:
 
     # Load the model
     nlp = spacy.load("en_blackstone_proto")
-    with open("./outputs/terms.txt", "w") as text_file:
+    with open( OUTPUT_REPO + "terms.txt", "a") as text_file:
         text_file.write("Important terms: \n")
     for i in bb:
         doc = nlp(i)
     # Call displacy and pass `ner_displacy_options` into the option parameter`
         if doc.ents != ():
           print(doc.ents[0])
-          with open("./outputs/terms.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "terms.txt", "a") as text_file:
             text_file.write("%s \n" %doc.ents[0])
         else:
           pass
@@ -211,116 +218,116 @@ if TEXT_BASED_PDF == 0:
     from lexnlp.extract.en.regulations import get_regulations as ar
     from lexnlp.extract.en.trademarks import get_trademarks as au
 
-    with open("./outputs/insg.txt", "w") as text_file:
+    with open( OUTPUT_REPO + "insg.txt", "w") as text_file:
         text_file.write("INSIGHTS: \n")
 
     for i in bb:
         if list(aa(i)) != []:
           print(list(aa(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(aa(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ab(i)) != []:
           print(list(ab(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ab(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ac(i)) != []:
           print(list(ac(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ac(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ae(i)) != []:
           print(list(ae(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ae(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(af(i)) != []:
           print(list(af(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(af(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ag(i)) != []:
           print(list(ag(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ag(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
       
         elif list(ai(i)) != []:
           print(list(ai(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ai(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(aj(i)) != []:
           print(list(aj(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(aj(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ak(i)) != []:
           print(list(ak(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ak(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(al(i)) != []:
           print(list(al(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(al(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         
         elif list(an(i)) != []:
           print(list(an(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(an(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ao(i)) != []:
           print(list(ao(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ao(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(aq(i)) != []:
           print(list(aq(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(aq(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(ar(i)) != []:
           print(list(ar(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(ar(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
         elif list(au(i)) != []:
           print(list(au(i)))
-          with open("./outputs/insg.txt", "a") as text_file:
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file:
             text_file.write("%s\n"%str(list(au(i))))
         
-          with open("./outputs/insg.txt", "a") as text_file: 
+          with open(OUTPUT_REPO + "insg.txt", "a") as text_file: 
             text_file.write("\n\n")
 
 
@@ -373,8 +380,8 @@ if TEXT_BASED_PDF == 0:
     word_cloud = WordCloud(collocations = False, background_color = 'black', colormap='RdYlGn').generate(" ".join(map(str,yy)))
     plt.imshow(word_cloud, interpolation='bilinear')
     plt.axis("off")
-    plt.show()
-    plt.savefig('./outputs/cloud.png')
+    # plt.show()
+    plt.savefig( OUTPUT_REPO + MAIN_PDF_NAME + str(page_count) + "-cloud.png" )
 
 
 
@@ -441,4 +448,7 @@ if TEXT_BASED_PDF == 0:
 
     query = " ".join(map(str,yy[:5]))
     results = google_search(query)
-    results
+    print(results)
+
+
+# send_ok()

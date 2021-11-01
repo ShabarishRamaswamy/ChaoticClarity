@@ -24,19 +24,25 @@ import urllib
 import pandas as pd
 from requests_html import HTML
 from requests_html import HTMLSession
+# from flask import Flask
+# app = Flask(__name__)
+import os
+
 
 
 PDF_REPO = "../ChaoticClarity-Backend/pdfs/"
 OUTPUT_REPO = "../ChaoticClarity-Backend/outputs/"
-MAIN_PDF_NAME = 0
+MAIN_PDF_NAME = os.getenv("MAIN_PDF_NAME") or 0
 TEXT_BASED_PDF = 1
-testing = True
+testing = False
 
 
 def sendPDFName(PDFName):
+  print("PDFname: " + PDFName)
   global MAIN_PDF_NAME 
   MAIN_PDF_NAME = PDFName
-  return "done"
+  print("Inside SendPDF function: " + str(MAIN_PDF_NAME))
+  return
 
 if testing:
   if MAIN_PDF_NAME:
@@ -44,6 +50,9 @@ if testing:
   else:
     sendPDFName("test-1")
 
+
+
+print("Main PDF NAME: " + MAIN_PDF_NAME)
 
 ##
 FILE_PATH = PDF_REPO + MAIN_PDF_NAME + ".pdf"
@@ -451,4 +460,5 @@ if TEXT_BASED_PDF == 0:
     print(results)
 
 
-# send_ok()
+from app import send_ok
+send_ok()

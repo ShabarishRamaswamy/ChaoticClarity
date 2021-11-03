@@ -43,4 +43,4 @@ def process_pdf():
     return 'Working on it.'
 
 def send_ok():
-    requests.get('http://localhost:5000/PDFProcess/completed')
+    requests.get("http://localhost:5000/PDFProcess/" + str(os.getenv("MAIN_PDF_NAME")))

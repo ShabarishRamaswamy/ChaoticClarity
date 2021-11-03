@@ -459,6 +459,9 @@ if TEXT_BASED_PDF == 0:
     results = google_search(query)
     print(results)
 
+    with open( OUTPUT_REPO + "links.txt", "a" ) as text_file: 
+      text_file.write(str(results))
+
 
 from app import send_ok
 send_ok()
